@@ -1,0 +1,29 @@
+{
+  "name": "mycontacts-serveur",
+  "version": "1.0.0",
+  "description": "Développeur une serveur web permettant à chaque utilisateur de gérer son carnet de contacts personnel",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MyContactsLewan/MyContactsServeur.git"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "api",
+    "serveur",
+    "lewan"
+  ],
+  "author": "Tran Dang Quang LE (Lewan)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MyContactsLewan/MyContactsServeur/issues"
+  },
+  "homepage": "https://github.com/MyContactsLewan/MyContactsServeur#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
