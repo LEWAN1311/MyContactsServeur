@@ -2,7 +2,7 @@
   "name": "mycontacts-serveur",
   "version": "1.0.0",
   "description": "Développeur une serveur web permettant à chaque utilisateur de gérer son carnet de contacts personnel",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/MyContactsLewan/MyContactsServeur#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mongodb": "^6.19.0"
   }
 }
