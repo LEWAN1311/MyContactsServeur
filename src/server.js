@@ -23,7 +23,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://localhost:3000",
+        url: "http://localhost:3080",
       },
     ],
     components: {
@@ -48,8 +48,13 @@ app.use((req, res, next) => {
   next();
 });
 
-// Auth routes
+// Public routes
 app.use('/auth', authRoutes);
+app.get('/', (req, res) => {
+  res.send('Hello World');
+});
+
+// Protected routes
 app.use('/contacts', contactRoutes);
 
 /**
@@ -65,18 +70,13 @@ app.use('/contacts', contactRoutes);
  *       401:
  *         description: Unauthorized
  */
-// Protected route
 app.get('/protected', requireAuth, (req, res) => {
-  res.json({ message: `Hello ${req.user.username}, you have accessed a protected route!` });
-});
-
-app.get('/', (req, res) => {
-  res.send('Hello World');
+  res.json({ message: `Hello ${req.user.email}, you have accessed a protected route!` });
 });
 
 app.use(errorHandle);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3080;
 
 (async () => {
   try {
