@@ -10,7 +10,10 @@ const getContacts = async (req, res, next) => {
         const items = await getContactsByIds(userId);
         return res.json(items);
     }
-    catch (error) { return next(error); }
+    catch (error) { 
+        console.error('getContacts error:', error);
+        return next(new ApiError(500, 'Internal server error'));
+    }
 };
 
 const createContact = async (req, res, next) => {
@@ -19,10 +22,15 @@ const createContact = async (req, res, next) => {
             return next(new ApiError(400, "Request body is required"));
         }
         const result = await create(req.user.user._id, req.body);
-        if (!result.ok) return res.status(result.status).json({ message: result.message });
+        if (!result.ok) {
+            return next(new ApiError(result.status || 400, result.message));
+        }
         return res.status(201).json(result.contact);
     }
-    catch (error) { return next(error) };
+    catch (error) { 
+        console.error('createContact error:', error);
+        return next(new ApiError(500, 'Internal server error'));
+    }
 };
 
 const updateContact = async (req, res, next) => {
@@ -35,7 +43,10 @@ const updateContact = async (req, res, next) => {
         if (!result.ok) return next(new ApiError(result.status || 400, result.message));
         return res.json(result.contact);
     }
-    catch (error) { return next(error) };
+    catch (error) { 
+        console.error('updateContact error:', error);
+        return next(new ApiError(500, 'Internal server error'));
+    }
 };
 
 const deleteContact = async (req, res, next) => {
@@ -48,7 +59,10 @@ const deleteContact = async (req, res, next) => {
         if (!result.ok) return next(new ApiError(result.status || 400, result.message));
         return res.status(204).send();
     }
-    catch (error) { return next(error) };
+    catch (error) { 
+        console.error('deleteContact error:', error);
+        return next(new ApiError(500, 'Internal server error'));
+    }
 };
 
 module.exports = {
