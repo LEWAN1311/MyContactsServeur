@@ -5,8 +5,8 @@ const { registerUser, authenticateUser, generateToken } = require('../services/a
  */
 const register = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const result = await registerUser(username, password);
+    const { email, password } = req.body;
+    const result = await registerUser(email, password);
     if (!result.ok) return res.status(result.status).json({ message: result.message });
     return res.status(201).json({ message: 'User registered' });
   } catch (error) {
@@ -19,8 +19,8 @@ const register = async (req, res) => {
  */
 const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const result = await authenticateUser(username, password);
+    const { email, password } = req.body;
+    const result = await authenticateUser(email, password);
     if (!result.ok) return res.status(result.status).json({ message: result.message });
     const user = result.user
     const token = generateToken(user);
