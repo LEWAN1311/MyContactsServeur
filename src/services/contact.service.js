@@ -28,13 +28,17 @@ const create = async (userId, data) => {
     return { ok: true, contact };
 }
 
-const updateContactById = async (id, dto) => {
+const updateContactById = async (id, dto, userId) => {
+    if (!userId) {
+        return { ok: false, status: 400, message: "userId is required" };
+    }
+    
     if (dto.phone !== undefined && !isValidPhone(dto.phone)) {
         return { ok: false, status: 400, message: "phone must be 10-20 characters" };
     }
 
     const contact = await Contact.findOneAndUpdate(
-        { _id: id },
+        { _id: id, userId: userId },
         { $set: dto },
         { new: true }
     );
@@ -46,8 +50,12 @@ const updateContactById = async (id, dto) => {
     return { ok: true, contact };
 }
 
-const deleteContactById = async (id) =>{
-    const result = await Contact.findOneAndDelete({ _id: id });
+const deleteContactById = async (id, userId) => {
+    if (!userId) {
+        return { ok: false, status: 400, message: "userId is required" };
+    }
+    
+    const result = await Contact.findOneAndDelete({ _id: id, userId: userId });
 
     if (!result) {
         return { ok: false, status: 404, message: "Contact not found" };

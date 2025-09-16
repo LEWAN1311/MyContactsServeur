@@ -21,6 +21,9 @@ const createContact = async (req, res, next) => {
         if (!req.body || Object.keys(req.body).length === 0) {
             return next(new ApiError(400, "Request body is required"));
         }
+        if (!req.user || !req.user.user || !req.user.user._id) {
+            return next(new ApiError(401, "Unauthorized: User information is missing"));
+        }
         const result = await create(req.user.user._id, req.body);
         if (!result.ok) {
             return next(new ApiError(result.status || 400, result.message));
@@ -38,9 +41,15 @@ const updateContact = async (req, res, next) => {
         if (!req.body || Object.keys(req.body).length === 0) {
             return next(new ApiError(400, "Request body is required"));
         }
+        if (!req.user || !req.user.user || !req.user.user._id) {
+            return next(new ApiError(401, "Unauthorized: User information is missing"));
+        }
         const { id } = req.params;
-        const result = await updateContactById(id, req.body);
-        if (!result.ok) return next(new ApiError(result.status || 400, result.message));
+        const userId = req.user.user._id;
+        const result = await updateContactById(id, req.body, userId);
+        if (!result.ok) {
+            return next(new ApiError(result.status || 400, result.message));
+        }
         return res.json(result.contact);
     }
     catch (error) { 
@@ -54,9 +63,15 @@ const deleteContact = async (req, res, next) => {
         if (!req.params || Object.keys(req.params).length === 0) {
             return next(new ApiError(400, "Parameters are required"));
         }
+        if (!req.user || !req.user.user || !req.user.user._id) {
+            return next(new ApiError(401, "Unauthorized: User information is missing"));
+        }
         const { id } = req.params;
-        const result = await deleteContactById(id);
-        if (!result.ok) return next(new ApiError(result.status || 400, result.message));
+        const userId = req.user.user._id;
+        const result = await deleteContactById(id, userId);
+        if (!result.ok) {
+            return next(new ApiError(result.status || 400, result.message));
+        }
         return res.status(204).send();
     }
     catch (error) { 
