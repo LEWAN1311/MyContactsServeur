@@ -6,9 +6,11 @@ const requireAuth = require('./middlewares/auth.middleware');
 const errorHandle = require('./middlewares/error.middleware');
 const authRoutes = require('./routes/auth.routes');
 const contactRoutes = require('./routes/contact.routes');
+const cors = require('./config/cors');
 
 const app = express();
 app.use(express.json());
+app.use(cors);
 
 // Swagger config
 const swaggerOptions = {
