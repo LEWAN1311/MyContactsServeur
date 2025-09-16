@@ -1,10 +1,17 @@
 const Contact = require('../models/contact.model');
 
-// Validation: phone must be 10–20 characters
+// Validation: phone must be 10–20 characters and contain only numeric characters
 const isValidPhone = (phone) => {
     if (typeof phone !== 'string') return false;
-    const len = phone.trim().length;
-    return len >= 10 && len <= 20;
+    const trimmedPhone = phone.trim();
+    const len = trimmedPhone.length;
+    
+    // Check length
+    if (len < 10 || len > 20) return false;
+    
+    // Check if all characters are numeric
+    const numericRegex = /^\d+$/;
+    return numericRegex.test(trimmedPhone);
 };
 
 const getContactsByIds = async (userId) => {
