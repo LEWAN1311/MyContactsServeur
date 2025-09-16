@@ -28,7 +28,13 @@ const create = async (userId, data) => {
         return { ok: false, status: 400, message: "firstName, lastName and phone are required" };
     }
     if (!isValidPhone(phone)) {
-        return { ok: false, status: 400, message: "phone must be 10-20 characters" };
+        return { ok: false, status: 400, message: "phone must be 10-20 characters and contain only numeric digits" };
+    }
+
+    // Check if phone number already exists for this user
+    const existingContact = await Contact.findOne({ userId, phone }).lean();
+    if (existingContact) {
+        return { ok: false, status: 409, message: "A contact with this phone number already exists" };
     }
 
     const contact = await Contact.create({ userId, firstName, lastName, phone });
@@ -41,7 +47,20 @@ const updateContactById = async (id, dto, userId) => {
     }
     
     if (dto.phone !== undefined && !isValidPhone(dto.phone)) {
-        return { ok: false, status: 400, message: "phone must be 10-20 characters" };
+        return { ok: false, status: 400, message: "phone must be 10-20 characters and contain only numeric digits" };
+    }
+
+    // If phone is being updated, check if it already exists for another contact of this user
+    if (dto.phone !== undefined) {
+        const existingContact = await Contact.findOne({ 
+            userId, 
+            phone: dto.phone, 
+            _id: { $ne: id } // Exclude the current contact being updated
+        }).lean();
+        
+        if (existingContact) {
+            return { ok: false, status: 409, message: "A contact with this phone number already exists" };
+        }
     }
 
     const contact = await Contact.findOneAndUpdate(
