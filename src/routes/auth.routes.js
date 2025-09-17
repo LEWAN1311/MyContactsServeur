@@ -1,5 +1,6 @@
 const express = require('express');
-const { register, login } = require('../controllers/auth.controller');
+const { register, login, logout } = require('../controllers/auth.controller');
+const requireAuth = require('../middlewares/auth.middleware');
 
 const router = express.Router();
 
@@ -50,5 +51,22 @@ router.post('/register', register);
  *         description: Invalid credentials
  */
 router.post('/login', login);
+
+/**
+ * @swagger
+ * /auth/logout:
+ *   post:
+ *     summary: Logout user
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User logged out successfully
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Internal server error
+ */
+router.post('/logout', requireAuth, logout);
 
 module.exports = router;

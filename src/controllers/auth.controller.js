@@ -1,4 +1,4 @@
-const { registerUser, authenticateUser, generateToken } = require('../services/auth.service');
+const { registerUser, authenticateUser, generateToken, logoutUser } = require('../services/auth.service');
 
 /**
  * Handle user registration
@@ -30,9 +30,30 @@ const login = async (req, res) => {
   }
 }
 
+/**
+ * Handle user logout
+ */
+const logout = async (req, res) => {
+  try {
+    // Récupérer l'ID utilisateur depuis le token JWT (déjà vérifié par le middleware auth)
+    const userId = req.user.user._id;
+    
+    const result = await logoutUser(userId);
+    if (!result.ok) {
+      return res.status(result.status).json({ message: result.message });
+    }
+    
+    return res.json({ message: 'User logged out successfully' });
+  } catch (error) {
+    console.error('logout error:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
 module.exports = {
   register,
   login,
+  logout,
 };
 
 
