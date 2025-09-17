@@ -36,7 +36,6 @@ const authenticateUser = async (email, password) => {
     if (!isValid) return { ok: false, status: 405, message: 'Invalid credentials' };
     return { user, ok: true };
   } catch (err) {
-    console.error('authenticateUser error:', err);
     return { ok: false, status: 500, message: 'Internal server error' };
   }
 }
