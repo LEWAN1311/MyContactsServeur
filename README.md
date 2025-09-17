@@ -277,7 +277,7 @@ curl -X GET http://localhost:3080/contacts \
 
 - **firstName**: Required, string
 - **lastName**: Required, string
-- **phone**: Required, 10-20 digits, numeric only, unique per user
+- **phone**: Required, string, 10-20 chiffres, numeric only, unique per contact
 
 ### Example Contact Operations
 

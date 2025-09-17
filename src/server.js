@@ -12,7 +12,6 @@ const app = express();
 app.use(express.json());
 app.use(cors);
 
-// Swagger config
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
@@ -42,7 +41,6 @@ const swaggerOptions = {
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Logging middleware (placed before routes)
 app.use((req, res, next) => {
   console.log(`${req.method} request for ${req.url}`);
   next();
@@ -50,9 +48,6 @@ app.use((req, res, next) => {
 
 // Public routes
 app.use('/auth', authRoutes);
-app.get('/', (req, res) => {
-  res.send('Hello World');
-});
 
 // Protected routes
 app.use('/contacts', contactRoutes);

@@ -9,14 +9,12 @@ const registerUser = async (email, password) => {
     return { ok: false, status: 400, message: 'Email and password are required' };
   }
 
-  // Try DB first (Mongoose)
   try {
     const existing = await User.findOne({ email: email }).lean();
     if (existing) {
       return { ok: false, status: 409, message: 'Email already exists' };
     }
 
-    // Password hashing
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({ email: email, password: hashedPassword, creatAt: new Date() });
