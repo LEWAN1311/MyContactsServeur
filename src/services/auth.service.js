@@ -47,36 +47,10 @@ const generateToken = (user) => {
   return jwt.sign({ user }, SECRET_KEY, { expiresIn: '1h' });
 }
 
-const logoutUser = async (userId) => {
-  try {
-    // Pour JWT stateless, la déconnexion côté serveur consiste principalement
-    // à vérifier que l'utilisateur existe et retourner un succès
-    // Le vrai travail de déconnexion se fait côté client (suppression du token)
-    
-    if (!userId) {
-      return { ok: false, status: 400, message: 'User ID is required' };
-    }
-
-    const user = await User.findById(userId).lean();
-    if (!user) {
-      return { ok: false, status: 404, message: 'User not found' };
-    }
-
-    // Optionnel: Vous pouvez ajouter une liste noire de tokens ici
-    // ou mettre à jour un champ lastLogout dans le modèle User
-    
-    return { ok: true, message: 'User logged out successfully' };
-  } catch (err) {
-    console.error('logoutUser error:', err);
-    return { ok: false, status: 500, message: 'Internal server error' };
-  }
-}
-
 module.exports = {
   registerUser,
   authenticateUser,
   generateToken,
-  logoutUser,
 };
 
 
