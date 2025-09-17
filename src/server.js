@@ -9,17 +9,11 @@ const requireAuth = require('./middlewares/auth.middleware');
 const errorHandle = require('./middlewares/error.middleware');
 const authRoutes = require('./routes/auth.routes');
 const contactRoutes = require('./routes/contact.routes');
-const cors = require('cors');
+const cors = require('./config/cors');
 
 const app = express();
 app.use(express.json());
-app.use(cors({
-  origin: process.env.CORS_ALLOWED_ORIGINS,
-  credentials: true,
-  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-  optionsSuccessStatus: 204,
-}));
+app.use(cors);
 
 const swaggerOptions = {
   definition: {
@@ -87,10 +81,9 @@ const port = process.env.PORT || 3080;
 (async () => {
   try {
     await connectDb();
-    app.listen(port, '0.0.0.0', () => {
-      console.log(`Server running at http://0.0.0.0:${port}/`);
-      console.log(`Swagger docs at http://0.0.0.0:${port}/api-docs`);
-      console.log(`CORS allowed origins: ${process.env.CORS_ALLOWED_ORIGINS || '*'}`);
+    app.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}/`);
+      console.log(`Swagger docs at http://localhost:${port}/api-docs`);
     });
   } catch (err) {
     console.error('Failed to start server due to DB connection error:', err?.message || err);
