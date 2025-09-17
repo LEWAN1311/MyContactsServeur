@@ -13,7 +13,9 @@ const cors = require('./config/cors');
 
 const app = express();
 app.use(express.json());
-app.use(cors);
+app.use(cors({
+  origin: process.env.CORS_ALLOWED_ORIGINS
+}));
 
 const swaggerOptions = {
   definition: {
