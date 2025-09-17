@@ -1,3 +1,6 @@
+// Load environment variables from root directory
+require('dotenv').config({ path: '../.env' });
+
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
