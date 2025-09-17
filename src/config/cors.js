@@ -1,8 +1,16 @@
 const cors = require('cors');
 
+// Get CORS configuration from environment variables
 const raw = process.env.CORS_ALLOWED_ORIGINS || '*';
 const allowAll = raw.trim() === '*';
 const whitelist = allowAll ? [] : raw.split(',').map(s => s.trim()).filter(Boolean);
+
+// Debug logging
+console.log('CORS Configuration:');
+console.log('CORS_ALLOWED_ORIGINS from env:', process.env.CORS_ALLOWED_ORIGINS);
+console.log('Raw value:', raw);
+console.log('Allow all:', allowAll);
+console.log('Whitelist:', whitelist);
 
 const options = {
   origin: (origin, callback) => {
