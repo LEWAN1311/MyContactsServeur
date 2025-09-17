@@ -44,7 +44,7 @@ const authenticateUser = async (email, password) => {
 }
 
 const generateToken = (user) => {
-  return jwt.sign({ user }, SECRET_KEY);
+  return jwt.sign({ user }, SECRET_KEY, { expiresIn: '1h' });
 }
 
 const logoutUser = async (userId) => {
